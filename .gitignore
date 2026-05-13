@@ -1,0 +1,25 @@
+# Key material — never commit
+*.key
+*.pem
+*.crt
+*.cer
+
+# Local kubeconfig
+kubeconfig
+*.kubeconfig
+
+# Separate repo — TS GitHub Action lives independently
+labs/typescript-actions/
+
+# Editor / OS noise
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~
+
+# Common
+node_modules/
+dist/
+.env
+.env.local
