@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: forgejo
+spec:
+  serviceName: forgejo-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forgejo
+  template:
+    metadata:
+      labels:
+        app: forgejo
+    spec:
+      containers:
+        - name: forgejo
+          image: codeberg.org/forgejo/forgejo:10
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: forgejo-secret
+            - configMapRef:
+                name: forgejo-config
+          volumeMounts:
+            - name: forgejo-storage
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: forgejo-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi
