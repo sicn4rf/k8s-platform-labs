@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+metadata:
+  name: mock-values
+policies:
+  - name: quiz
+    rules:
+      - name: match-httproute-creation
+        values:
+          secPoliciesTargetRefs: ["httpbin"]

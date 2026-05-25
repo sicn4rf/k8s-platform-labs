@@ -1,0 +1,27 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: quiz
+spec:
+  background: false
+  rules:
+    - name: match-httproute-creation
+      context:
+        - name: secPoliciesTargetRefs
+          apiCall:
+            urlPath: '/apis/gateway.envoyproxy.io/v1alpha1/securitypolicies'
+            jmesPath: 'items[*].spec.targetRefs[*].name[]'
+      match:
+        any:
+          - resources:
+              kinds:
+                - HTTPRoute
+      validate:
+        failureAction: Enforce
+        message: "The HTTPRoute {{ request.object.metadata.name }} has no attached SecurityPolicy"
+        deny:
+          conditions:
+            any:
+              - key: '{{ request.object.metadata.name }}'
+                operator: AnyNotIn
+                value: '{{ secPoliciesTargetRefs }}' 

@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: match-httproute-policy-test
+policies:
+  - match-httproute.yaml
+resources:
+  - httpbin-good.yaml
+  - httpbin-bad.yaml
+variables: values.yaml
+results:
+  - policy: quiz
+    rule: match-httproute-creation
+    resources: 
+      - "httpbin"
+    kind: HTTPRoute
+    result: pass
+  - policy: quiz
+    rule: match-httproute-creation
+    resources: 
+      - "bad"
+    kind: HTTPRoute
+    result: fail
