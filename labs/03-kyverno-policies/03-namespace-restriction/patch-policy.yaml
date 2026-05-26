@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: patch-policy
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+    - name: check-policy-ns-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - EnvoyPatchPolicy
+      exclude:
+        any:
+          - resources:
+              namespaceSelector:
+                matchLabels:
+                  platform: "true"
+      validate:
+        message: "EnvoyPatchPolicy must have namespace label platform: true"
+        deny: {}

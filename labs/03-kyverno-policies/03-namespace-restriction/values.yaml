@@ -1,0 +1,11 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+metadata:
+  name: mock-values
+namespaceSelector:
+  - name: test
+    labels:
+      platform: "true"
+  - name: prod
+    labels:
+      platform: "false"
