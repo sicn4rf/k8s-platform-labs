@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: dev-label-policy
+spec:
+  rules:
+    - name: check-dev-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - HTTPRoute
+              namespaces:
+                - dev
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              +(platform/environment): dev

@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: dev-label-policy-test
+policies: 
+  - dev-label-policy.yaml
+resources:
+  - test-httproute.yaml
+  - test-httproute-prod.yaml
+  - test-httproute-labeled.yaml
+results:
+  - policy: dev-label-policy
+    rule: check-dev-label
+    resources:
+      - "test-httproute"
+    kind: HTTPRoute
+    result: pass
+  - policy: dev-label-policy
+    rule: check-dev-label
+    resources:
+      - "test-httproute-prod"
+    kind: HTTPRoute
+    result: skip
+  - policy: dev-label-policy
+    rule: check-dev-label
+    resources:
+      - "test-httproute-labeled"
+    kind: HTTPRoute
+    result: skip
