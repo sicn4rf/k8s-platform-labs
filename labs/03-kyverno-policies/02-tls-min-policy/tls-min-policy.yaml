@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: tls-min-policy
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+    - name: check-tls-min-policy
+      match:
+        any:
+          - resources:
+              kinds:
+                - ClientTrafficPolicy
+      validate:
+        message: "TLS minimum version is strictly TLSv1_2 or TLSv1_3"
+        anyPattern:
+          - spec:
+              tls:
+                minVersion: "1.2"
+          - spec:
+              tls:
+                minVersion: "1.3"
