@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app
+  labels:
+    app: hello-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-pod
+  template:
+    metadata:
+      labels:
+        app: hello-pod
+    spec:
+      containers:
+        - name: hello-pod
+          image: hello-user:dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://datadog-agent.default.svc.cluster.local:4318
