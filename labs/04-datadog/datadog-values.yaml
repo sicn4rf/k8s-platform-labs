@@ -1,0 +1,18 @@
+datadog:
+  apiKeyExistingSecret: datadog-secret
+  clusterName: datadog-lab
+  site: us5.datadoghq.com
+  otlp:
+    receiver:
+      protocols:
+        grpc:
+          enabled: true
+        http:
+          enabled: true
+  env:
+    - name: DD_HOSTNAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+      
+
